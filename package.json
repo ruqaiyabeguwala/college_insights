@@ -1,0 +1,26 @@
+{
+  "name": "college_insites",
+  "version": "1.0.0",
+  "description": "A simple college  website for displaying student information ans stats ",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "server": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruqaiyabeguwala/college_insights.git"
+  },
+  "author": "Ruqaiya Beguwala",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ruqaiyabeguwala/college_insights/issues"
+  },
+  "homepage": "https://github.com/ruqaiyabeguwala/college_insights#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.7.4",
+    "nodemon": "^1.19.3"
+  }
+}
