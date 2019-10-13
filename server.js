@@ -1,10 +1,11 @@
 const express= require("express");
 const app= express();
 const mongoose=require("mongoose");
+const config= require("config")
 
 const db="mongodb://localhost:27017/college_insights";
 mongoose
-.connect(db,{useNewUrlParser: true,useCreateIndex:true,useUnifiedTopology: true})
+.connect(config.get("mongoURI"),{useNewUrlParser: true,useCreateIndex:true,useUnifiedTopology: true})
 .then(()=>console.log("mongoDB connected"))
 .catch((err)=>console.log(err));
 

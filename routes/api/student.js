@@ -78,22 +78,26 @@ router.get("/:id",async (req,res)=>{
    }
    })
    
-
+ //@route /student/:id
+//@desc get  student details of particular id
    router.put("/:id", async (req,res)=>{
     
     try{
         const student= await Student.findById(req.params.id);
-        
+        console.error(req.body.present)
         student.attendance.unshift({present:req.body.present});
         let total=0;
+        let p=0;
 
         student.attendance.map(at=>{
-                if( at.present)
+                if( at.present){
+                p++;
+            }
                 total++;
         })
-        console.error(total)
-     // student.push({total})
-     await student.updateOne({total:total})
+       
+        const av=p/total
+     await student.updateOne({total:av})
         await student.save();
        // await newSt.save()
         res.json(student);

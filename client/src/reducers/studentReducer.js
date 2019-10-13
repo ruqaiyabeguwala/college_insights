@@ -1,5 +1,6 @@
 import {GET_STUDENT_WITH_BRANCH_FAIL,GET_STUDENT_WITH_BRANCH_SUCCESS, 
-    GET_STUDENT_FAIL,GET_STUDENT,GET_SINGLE_STUDENT} from "./../actions/types";
+    GET_STUDENT_FAIL,GET_STUDENT,GET_SINGLE_STUDENT,
+     SET_ATTENDANCE,SET_ATTENDANCE_FAIL, SEARCH_STUDENT,SEARCH_STUDENT_FAIL} from "./../actions/types";
 
 
 const initState={
@@ -25,8 +26,22 @@ export default function(state=initState,action){
             singleStudent:action.payload
          }
 
+         case SET_ATTENDANCE:
+         return{
+             ...state,
+            classStudent:state.classStudent.map(student=>student._id===action.payload.id?{...student,student:action.payload}:student),
+            
+         }
+         case SEARCH_STUDENT:
+         return{
+             ...state,
+            student:state.student.filter(st=>st.name==action.payload)
+         //   data:state.data.filter(post=>post._id!==action.payload)
+         }
         case GET_STUDENT_WITH_BRANCH_FAIL:
         case GET_STUDENT_FAIL:
+        case SET_ATTENDANCE_FAIL:
+        case SEARCH_STUDENT_FAIL:
         return{
             ...state
         }

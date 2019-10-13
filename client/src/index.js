@@ -8,8 +8,9 @@ import {BrowserRouter,Route} from "react-router-dom";
 import Dashboard from "./components/dashboard";
 import thunk from "redux-thunk";
 import rootReducer from "./reducers/index"
-import Student from './components/students';
 import StudentDetail from './components/studentDetail';
+import attendance from './components/attendance';
+import studentByYear from './components/studentByYear';
 
 
 const store=createStore(rootReducer,composeWithDevTools(applyMiddleware(thunk)))
@@ -19,8 +20,9 @@ ReactDOM.render(
 
     <BrowserRouter>
     <Route exact path="/" component={Dashboard}/>
-    <Route exact path="/student/:branch/:year" component={Student}/>
+    <Route exact path="/student/:branch/:year" component={studentByYear}/>
     <Route exact path="/student/:id" component={StudentDetail}/>
+    <Route exact path="/student/attendance" component={attendance}/>
 
 </BrowserRouter>
 </Provider>

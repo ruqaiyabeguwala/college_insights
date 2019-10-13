@@ -6,20 +6,25 @@ import _ from "lodash"
 const AttendanceModal = ({student}) => {
   
 
+
   const [modal, setModal] = useState(false);
 
   const toggle = () => setModal(!modal);
-
+if(!student.attendance)
+return "No attendance found!"
   return (
     <div>
       <Button onClick={toggle}>Show attendance</Button>
       <Modal isOpen={modal} toggle={toggle} >
         <ModalHeader toggle={toggle}>Attendance Log</ModalHeader>
         <ModalBody>
+       
+        
        <ListGroup>
            {
-              
+               
                _.map(student.attendance, att=>{
+                
                   let present="present"
                    if(att.present)
                     present="present"
@@ -44,12 +49,11 @@ const AttendanceModal = ({student}) => {
             
          </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={toggle}>Do Something</Button>
           <Button color="secondary" onClick={toggle}>Cancel</Button>
         </ModalFooter>
       </Modal>
     </div>
-  );
+  ) 
 }
 
 export default  (AttendanceModal);
