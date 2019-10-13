@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server",
-    "server": "nodemon server"
+    "server": "nodemon server",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \" npm run server \" \" npm run client \""
   },
   "repository": {
     "type": "git",
@@ -19,8 +21,11 @@
   "homepage": "https://github.com/ruqaiyabeguwala/college_insights#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "concurrently": "^5.0.0",
+    "config": "^3.2.3",
     "express": "^4.17.1",
     "mongoose": "^5.7.4",
-    "nodemon": "^1.19.3"
+    "nodemon": "^1.19.3",
+    "redux-thunk": "^2.3.0"
   }
 }

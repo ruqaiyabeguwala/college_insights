@@ -10,13 +10,11 @@ mongoose
 
 app.use(express.json({extended:false}))
 
-app.use("/",require("./routes/api/student"))
+app.use("/student",require("./routes/api/student"))
 
 //for searches
 app.use("/search",require("./routes/api/search"))
 
-//for attendances
-app.use("/attendance",require("./routes/api/attendance")) 
 
 const PORT= process.env.PORT|| 5000;
 app.listen(5000,()=>console.log(`server running on port ${PORT}`));
