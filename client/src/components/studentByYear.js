@@ -1,19 +1,25 @@
-import React, {Component, useState,useEffect } from 'react';
-import { Table,ListGroupItem,ListGroup,TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
+import React, {useEffect } from 'react';
+import { Table, Button } from 'reactstrap';
 import classnames from 'classnames';
-import Search from "../containers/search"
+import Search from "./search"
 import MyNavbar from "./navbar"
 import {connect} from "react-redux";
 import { getStudentWithBranch } from '../actions';
 import { withRouter } from 'react-router-dom';
 import empty from "./../img/empty.gif"
 import {setAttendance} from "./../actions/index"
+import PropTypes from 'prop-types'
 
 const Tabs = ({match,getStudentWithBranch,student,history,setAttendance}) => {
-  
+ 
   useEffect(() => {
   getStudentWithBranch(match.params.branch,match.params.year)
 }, [match.params.year,match.params.branch])
+
+const onClickHandle=(id,present)=>{
+  setAttendance(id,present)
+
+}
 
 if(!student.length){
   return <div>
@@ -25,12 +31,10 @@ if(!student.length){
   return (
     <div>
       <MyNavbar/>
-      <Search/>
        <Table>
 <thead>
   <tr>
     <th>Name</th>
-    <th> Total attendance</th>
     <th>Present</th>
     <th>Absent</th>
   </tr>
@@ -40,10 +44,9 @@ if(!student.length){
  { student.map((student)=>{
 
     return <tr key={student._id}>
-    <td onClick={()=>history.push(`/student/${student._id}`)} style={{cursor:"pointer",padding:"10px"}}>{student.name}</td>
-    <td>{student.total}</td>
-    <td><Button className="btn-danger" onClick={()=>setAttendance(student._id,false)}>Present</Button></td>
-  <td><Button className="btn-success" onClick={()=>setAttendance(student._id,true)}>Absent</Button></td>
+    <td onClick={()=>history.push(`/student/${student._id}`)}  style={{cursor:"pointer",padding:"10px"}}>{student.name}</td>
+    <td><Button className="btn-success" onClick={()=>onClickHandle(student._id,"true")}>Present</Button></td>
+  <td><Button className="btn-danger" onClick={()=>onClickHandle(student._id,"false")}>Absent</Button></td>
   </tr>
  })
 }
@@ -55,6 +58,15 @@ if(!student.length){
     </div>
   );
 }
+
+Tabs.propTypes={
+  getStudentWithBranch:PropTypes.func.isRequired,
+  student:PropTypes.object.isRequired,
+  history:PropTypes.func.isRequired,
+  setAttendance:PropTypes.func.isRequired,
+  match:PropTypes.func.isRequired,
+  }
+
 function mapStateToProps(state){
     return{
         student:state.student.classStudent

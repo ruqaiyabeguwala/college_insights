@@ -5,14 +5,14 @@ const Student= require("./../../model/Student");
 var ObjectId = require('mongoose').Types.ObjectId; 
 
 
-//@api /search/:i\name
+//@api /search/name
 //@desc search a student by name
 router.get("/:name",async (req,res)=>{
 
     try{ 
-   const data= req.params.name
-       const student= await Student.find({name:data});
-       if(!student)
+
+       const student= await Student.find({name:{ $regex : new RegExp(req.params.name, "i") }});
+       if(!student.length)
         return res.status(404).json({errors:[{msg:"No Students found"}]})
    
         res.json(student)

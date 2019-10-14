@@ -4,7 +4,7 @@ import {connect} from "react-redux"
 import {getStudents} from "./../actions/index";
 import {ListGroup,ListGroupItem,Button} from "reactstrap"
 import empty from "./../img/empty.gif"
-import Search from "./../containers/search";
+import PropTypes from 'prop-types';
 
 const DashBoard =({getStudents,student:{student},history})=>{
 useEffect(() => {
@@ -21,7 +21,7 @@ if(!student.length){
        <div>
           
            <MyNavbar/>
-           <Search/>
+         
            <h1 >DashBoard!</h1>
      <ListGroup style={{margin:"20px"}} >
         {student.map(st=>{
@@ -36,6 +36,14 @@ if(!student.length){
    )
 
 }
+
+DashBoard.propTypes={
+    getStudents:PropTypes.func.isRequired,
+    student:PropTypes.object.isRequired,
+    history:PropTypes.func.isRequired,
+    
+    }
+  
 function mapStateToProps(state){
 return{
     student:state.student

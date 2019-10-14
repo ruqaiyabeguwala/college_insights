@@ -28,7 +28,9 @@ const MyNavbar =()=>{
             <Nav className="ml-auto" navbar>
           
                 <NavItem>
-                <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
+                <NavLink href="/">
+                <Link to="/search" style={{textDecoration:"none",color:"#000000"}}>Search</Link>
+                </NavLink>
               </NavItem>
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>

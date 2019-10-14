@@ -11,6 +11,7 @@ import rootReducer from "./reducers/index"
 import StudentDetail from './components/studentDetail';
 import attendance from './components/attendance';
 import studentByYear from './components/studentByYear';
+import Search from './components/search';
 
 
 const store=createStore(rootReducer,composeWithDevTools(applyMiddleware(thunk)))
@@ -23,6 +24,7 @@ ReactDOM.render(
     <Route exact path="/student/:branch/:year" component={studentByYear}/>
     <Route exact path="/student/:id" component={StudentDetail}/>
     <Route exact path="/student/attendance" component={attendance}/>
+    <Route exact path="/search/" component={Search}/>
 
 </BrowserRouter>
 </Provider>

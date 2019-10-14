@@ -1,7 +1,9 @@
 import {GET_STUDENT,GET_SINGLE_STUDENT,SEARCH_STUDENT,SEARCH_STUDENT_FAIL,
     GET_STUDENT_FAIL,GET_STUDENT_WITH_BRANCH_FAIL,
-    GET_STUDENT_WITH_BRANCH_SUCCESS,SET_ATTENDANCE,SET_ATTENDANCE_FAIL} from "./types"
+    GET_STUDENT_WITH_BRANCH_SUCCESS,SET_ATTENDANCE,SET_ATTENDANCE_FAIL,SET_ALERT,REMOVE_ALERT} from "./types"
 import axios from "axios";
+
+
 
 export const getStudentWithBranch=(branch,year)=>async dispatch=>{
     try{
@@ -50,12 +52,14 @@ dispatch({
     }
 }
 
-export const searchStudent=({name})=>async dispatch=>{
+export const searchStudent=(name)=>async dispatch=>{
     try{
-      
+     
+      const res= await axios.get(`/search/${name}`)
+      console.log(res.data)
      dispatch({
     type:SEARCH_STUDENT,
-    payload:name
+    payload:res.data
      })
     }
     catch(err){
@@ -69,11 +73,17 @@ dispatch({
 
 export const setAttendance=(id,present)=>async dispatch=>{
     try{
-     const res= await axios.put(`/student/${id}`,present)
+        const p={
+            present: present
+        }
+     const res= await axios.put(`/student/${id}`,p)
+     console.log(present)
      dispatch({
     type:SET_ATTENDANCE,
-    payload:res.data
+    payload:{id,student:res.data}
      })
+
+     
     }
     catch(err){
 console.error(err.message);

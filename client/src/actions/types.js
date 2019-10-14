@@ -7,3 +7,5 @@ export const SEARCH_STUDENT="SEARCH_STUDENT";
 export const SEARCH_STUDENT_FAIL="SEARCH_STUDENT_FAIL";
 export const SET_ATTENDANCE="SET_ATTENDANCE";
 export const SET_ATTENDANCE_FAIL="SET_ATTENDANCE_FAIL";
+export const SET_ALERT="set alert"
+export const REMOVE_ALERT="remove alert"

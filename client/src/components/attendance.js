@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter,ListGroupItem,ListGroup } from 'reactstrap';
-import {connect} from "react-redux"
 import _ from "lodash"
+import PropTypes from 'prop-types'
 
 const AttendanceModal = ({student}) => {
-  
-
-
   const [modal, setModal] = useState(false);
 
   const toggle = () => setModal(!modal);
@@ -17,14 +14,13 @@ return "No attendance found!"
       <Button onClick={toggle}>Show attendance</Button>
       <Modal isOpen={modal} toggle={toggle} >
         <ModalHeader toggle={toggle}>Attendance Log</ModalHeader>
-        <ModalBody>
-       
-        
+        <ModalBody>  
+          {!student.attendance? "No attendance found!":""}
        <ListGroup>
            {
                
                _.map(student.attendance, att=>{
-                
+                const classs=att.present?"success":"danger"
                   let present="present"
                    if(att.present)
                     present="present"
@@ -34,17 +30,13 @@ return "No attendance found!"
                 const day= date.getFullYear()+'-' + (date.getMonth()+1) + '-'+date.getDate();
                 return  <ListGroupItem key={att._id}>
                {day}
-               <Button style={{float:'right'}}>
-                    {present}
+             
+               <Button style={{float:'right'}} className={`btn btn-${classs}`}>
+                  {present}
                </Button>
                 </ListGroupItem> 
                })
-               
-               /*student.attendance.map(at=>{
-           return  <ListGroupItem>
-                 {at.present}
-                 </ListGroupItem>
-           })*/}
+            }
            </ListGroup>
             
          </ModalBody>
@@ -55,5 +47,10 @@ return "No attendance found!"
     </div>
   ) 
 }
+
+AttendanceModal.propTypes={
+   student:PropTypes.object.isRequired,
+   }
+
 
 export default  (AttendanceModal);

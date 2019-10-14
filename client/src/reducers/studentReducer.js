@@ -6,7 +6,8 @@ import {GET_STUDENT_WITH_BRANCH_FAIL,GET_STUDENT_WITH_BRANCH_SUCCESS,
 const initState={
     classStudent:[],
     student:[],
-    singleStudent:{}
+    singleStudent:{},
+    search:[]
 }
 export default function(state=initState,action){
     switch(action.type){
@@ -29,13 +30,13 @@ export default function(state=initState,action){
          case SET_ATTENDANCE:
          return{
              ...state,
-            classStudent:state.classStudent.map(student=>student._id===action.payload.id?{...student,student:action.payload}:student),
+            classStudent:state.classStudent.map(student=>student._id===action.payload.id?{...student,student:action.payload.student}:student),
             
          }
          case SEARCH_STUDENT:
          return{
              ...state,
-            student:state.student.filter(st=>st.name==action.payload)
+            search:action.payload
          //   data:state.data.filter(post=>post._id!==action.payload)
          }
         case GET_STUDENT_WITH_BRANCH_FAIL:

@@ -7,6 +7,8 @@ import {
 } from 'reactstrap';
 import {getStudent} from "./../actions/index"
 import AttendanceModal from "./attendance" 
+import MyNavbar from "./navbar"
+import PropTypes from 'prop-types';
 
 const StudentDetail = ({getStudent,student,match}) => {
 useEffect(() => {
@@ -15,11 +17,13 @@ useEffect(() => {
 
   return (
     <div>
-      <h1 center>Student Details!</h1>
+   <MyNavbar/>
+   <h1 style={{textAlign:"center"}}>Student Details!</h1>
+      
       <Row>
+      
         <Col sm="6" style={{margin:"30px auto",textAlign:"justify",fontWeight:"bold"}}>
       <Card>
-     { console.log(student)}
         <CardBody>
         <CardTitle>Name: {student.name}</CardTitle>
           <CardSubtitle>Branch: {student.branch}</CardSubtitle>
@@ -34,6 +38,14 @@ useEffect(() => {
    
   );
 };
+
+StudentDetail.propTypes={
+  getStudent:PropTypes.func.isRequired,
+  student:PropTypes.object.isRequired,
+  match:PropTypes.func.isRequired
+  }
+
+
 function mapStateToProps(state){
 return{
   student:state.student.singleStudent
