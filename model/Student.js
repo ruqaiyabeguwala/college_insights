@@ -18,8 +18,8 @@ const studentSchema= new mongoose.Schema({
     attendance:[
         {
             date:{
-                type:Date,
-                default: Date.now
+                type:String,
+              
             } ,
             present:{
                 type:Boolean,

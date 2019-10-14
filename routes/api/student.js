@@ -84,16 +84,19 @@ router.get("/:id",async (req,res)=>{
     
     try{
         const student= await Student.findById(req.params.id);
-       
+       // const dte=`${Date.now()}`.split("T")[0] 
+       const dt =new Date();
+      const date=  dt.getFullYear()+'-' + (dt.getMonth()+1) + '-'+dt.getDate();
         const att={
-            present:req.body.present
+            present:req.body.present,
+            date:date
         } 
         student.attendance.unshift(att);
         let total=0;
         let p=0;
         await student.save();
         student.attendance.map(at=>{
-            
+
                 if( at.present){
                 p++;
             }
@@ -101,11 +104,10 @@ router.get("/:id",async (req,res)=>{
         })
        
         const av=p/total*100
-       
      await student.updateOne({total:av})
        
        // await newSt.save()
-        res.json(student);
+        res.json(student.attendance);
         }
 
 catch(err){

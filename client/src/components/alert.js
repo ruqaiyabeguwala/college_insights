@@ -1,37 +1,24 @@
-import PropTypes from "prop-types";
-import React from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import Toast from "./Toast";
-import { removeToast } from "../actions";
+import React from 'react';
+import {connect} from "react-redux";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-const Toasts = ({ actions, toasts }) => {
-  const { removeToast } = actions;
-  return (
-    <ul className="toasts">
-      {toasts.map(toast => {
-        const { id } = toast;
-        return (
-          <Toast {...toast} key={id} onDismissClick={() => removeToast(id)} />
-        );
-      })}
-    </ul>
-  );
-};
 
-Toasts.propTypes = {
-  actions: PropTypes.shape({
-    removeToast: PropTypes.func.isRequired
-  }).isRequired,
-  toasts: PropTypes.arrayOf(PropTypes.object).isRequired
-};
 
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators({ removeToast }, dispatch)
-});
+const Alert=({alert})=>
+alert!=null && 
+alert.length>0 &&
+alert.map(
+    a=>
+    (
+    <div key={a.id} className={`alert alert-${a.type} ` }>
+       {a.msg}
+    </div>
+    ));               
 
-const mapStateToProps = state => ({
-  toasts: state.toasts
-});
+function mapStateToProps(state){
+    return{
+        alert:state.alert
+    }
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Toasts);
+export default connect(mapStateToProps)(Alert);

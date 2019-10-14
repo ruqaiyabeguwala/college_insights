@@ -15,10 +15,9 @@ return "No attendance found!"
       <Modal isOpen={modal} toggle={toggle} >
         <ModalHeader toggle={toggle}>Attendance Log</ModalHeader>
         <ModalBody>  
-          {!student.attendance? "No attendance found!":""}
+          {!student.attendance.length? "No attendance found!":""}
        <ListGroup>
-           {
-               
+           { 
                _.map(student.attendance, att=>{
                 const classs=att.present?"success":"danger"
                   let present="present"

@@ -61,10 +61,10 @@ if(!student.length){
 
 Tabs.propTypes={
   getStudentWithBranch:PropTypes.func.isRequired,
-  student:PropTypes.object.isRequired,
-  history:PropTypes.func.isRequired,
+  student:PropTypes.array.isRequired,
+  history:PropTypes.object.isRequired,
   setAttendance:PropTypes.func.isRequired,
-  match:PropTypes.func.isRequired,
+  match:PropTypes.object.isRequired,
   }
 
 function mapStateToProps(state){

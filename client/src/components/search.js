@@ -31,7 +31,7 @@ return(
             return <ListGroupItem key={st._id} onClick={()=>history.push(`/student/${st._id}`)} style={{cursor:"pointer"}}>
             
             {st.name}
-            <Button className="float-right">{st.total}</Button> 
+            <Button className="float-right">{st.total}%</Button> 
             </ListGroupItem>
         })
            
