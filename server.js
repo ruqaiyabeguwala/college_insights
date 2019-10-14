@@ -28,4 +28,4 @@ app.use("/search",require("./routes/api/search"))
 
 
 const PORT= process.env.PORT|| 5000;
-app.listen(5000,()=>console.log(`server running on port ${PORT}`));
+app.listen(PORT,()=>console.log(`server running on port ${PORT}`));
