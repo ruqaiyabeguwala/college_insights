@@ -28,5 +28,6 @@
     "nodemon": "^1.19.3",
     "redux-thunk": "^2.3.0",
     "uuid": "^3.3.3"
-  }
+  },
+  "heroku-postbuild":"NPM-CONFIG-PRODUCTION=false npm install --prefix client && run build --prefix client"
 }

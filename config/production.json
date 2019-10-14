@@ -1,0 +1,3 @@
+{
+    "mongoURI":"mongodb+srv://admin:admin@collegeinsights-mm1kp.mongodb.net/test?retryWrites=true&w=majority"
+}
