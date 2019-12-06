@@ -4,9 +4,9 @@ const mongoose=require("mongoose");
 const config= require("config")
 const path=require("path")
 
-const db="mongodb://localhost:27017/college_insights";
+const db="mongodb://localhost:27017/collegeInsight";
 mongoose
-.connect(config.get("mongoURI"),{useNewUrlParser: true,useCreateIndex:true,useUnifiedTopology: true})
+.connect(db,{useNewUrlParser: true,useCreateIndex:true,useUnifiedTopology: true})
 .then(()=>console.log("mongoDB connected"))
 .catch((err)=>console.log(err));
 
@@ -25,6 +25,7 @@ app.use("/student",require("./routes/api/student"))
 
 //for searches
 app.use("/search",require("./routes/api/search"))
+app.use("/auth",require("./routes/api/login"))
 
 
 const PORT= process.env.PORT|| 5000;

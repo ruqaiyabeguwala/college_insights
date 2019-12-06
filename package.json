@@ -20,14 +20,17 @@
   },
   "homepage": "https://github.com/ruqaiyabeguwala/college_insights#readme",
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "concurrently": "^5.0.0",
     "config": "^3.2.3",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
     "mongoose": "^5.7.4",
     "nodemon": "^1.19.3",
     "redux-thunk": "^2.3.0",
     "uuid": "^3.3.3"
   },
-  "heroku-postbuild":"NPM-CONFIG-PRODUCTION=false npm install --prefix client && run build --prefix client"
+  "heroku-postbuild": "NPM-CONFIG-PRODUCTION=false npm install --prefix client && run build --prefix client"
 }

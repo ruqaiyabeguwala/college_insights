@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import {Link} from "react-router-dom"
+import {connect} from "react-redux"
 import {
   Collapse,
   Navbar,
@@ -13,8 +14,9 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem } from 'reactstrap';
+  import {logout} from "./../actions/index"
 
-const MyNavbar =()=>{
+const MyNavbar =({isAuthenticated,logout})=>{
     const [isOpen, setIsOpen] = useState(false);
 
     const toggle = () => setIsOpen(!isOpen);
@@ -22,7 +24,7 @@ const MyNavbar =()=>{
     return (
       <div style={{color:"#cccccc"}}>
         <Navbar color="dark" light expand="md">
-          <NavbarBrand href="/">College Insights!</NavbarBrand>
+          <NavbarBrand href="/dashboard">College Insights!</NavbarBrand>
           <NavbarToggler onClick={toggle} />
           <Collapse isOpen={isOpen} navbar>
             <Nav className="ml-auto" navbar>
@@ -97,6 +99,16 @@ const MyNavbar =()=>{
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
+              
+              {  console.log(isAuthenticated)}
+             { !isAuthenticated?"": 
+              <NavItem>
+                <NavLink href="/" onClick={logout}>
+                <Link to="/" style={{textDecoration:"none",color:"#000000"}} >Logout</Link>
+                </NavLink>
+              </NavItem>
+            }
+             
             </Nav>
           </Collapse>
         </Navbar>
@@ -104,4 +116,7 @@ const MyNavbar =()=>{
     );
 }
 
-export default MyNavbar;
+MyNavbar.defaultProps={
+  isAuthenticated:false
+}
+export default connect(null,{logout})(MyNavbar);

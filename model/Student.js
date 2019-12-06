@@ -19,6 +19,7 @@ const studentSchema= new mongoose.Schema({
         {
             date:{
                 type:String,
+                unique:true
               
             } ,
             present:{
@@ -28,7 +29,7 @@ const studentSchema= new mongoose.Schema({
         }
     ],
     total:{
-        type:String,
+        type:Number,
         default:0
     }
 })

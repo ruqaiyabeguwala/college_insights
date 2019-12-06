@@ -6,7 +6,7 @@ import AttendanceModal from './attendance';
 import MyNavbar from './navbar';
 import PropTypes from 'prop-types'
 
-const Search=({searchStudent,student,history})=>{
+const Search=({searchStudent,student,history,user})=>{
 
 const handleSubmit=(event)=>{
     event.preventDefault()
@@ -14,7 +14,7 @@ const handleSubmit=(event)=>{
 }
 return(
     <div>
-        <MyNavbar/>
+        <MyNavbar isAuthenticated={user.isAuthenticated}/>
        <Row>
            <Col sm="10">
            <Form inline onSubmit={handleSubmit} style={{margin:"20px"}}>
@@ -52,7 +52,8 @@ history:PropTypes.func.isRequired
 
 function mapStateToProps(state){
     return{
-        student:state.student.search
+        student:state.student.search,
+        user:state.user
     }
 } 
 export default connect(mapStateToProps,{searchStudent})(Search);

@@ -10,14 +10,14 @@ import AttendanceModal from "./attendance"
 import MyNavbar from "./navbar"
 import PropTypes from 'prop-types';
 
-const StudentDetail = ({getStudent,student,match}) => {
+const StudentDetail = ({getStudent,student,match,user}) => {
 useEffect(() => {
  getStudent(match.params.id)
 }, [getStudent])
 
   return (
     <div>
-   <MyNavbar/>
+   <MyNavbar isAuthenticated={user.isAuthenticated}/>
    <h1 style={{textAlign:"center"}}>Student Details!</h1>
       
       <Row>
@@ -48,7 +48,8 @@ StudentDetail.propTypes={
 
 function mapStateToProps(state){
 return{
-  student:state.student.singleStudent
+  student:state.student.singleStudent,
+  user:state.user
 }
 }
 export default connect(mapStateToProps,{getStudent})(withRouter(StudentDetail));

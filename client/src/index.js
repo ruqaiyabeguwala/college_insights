@@ -12,19 +12,25 @@ import StudentDetail from './components/studentDetail';
 import attendance from './components/attendance';
 import studentByYear from './components/studentByYear';
 import Search from './components/search';
+import Login from './components/login';
+import App from "./App";
+import PrivateRoute from "./utils/privateRoute";
+import Alert from "./components/alert"
 
 
 const store=createStore(rootReducer,composeWithDevTools(applyMiddleware(thunk)))
 ReactDOM.render(
   
 <Provider  store={store}>
-
+<App/>
+<Alert/>
     <BrowserRouter>
-    <Route exact path="/" component={Dashboard}/>
-    <Route exact path="/student/:branch/:year" component={studentByYear}/>
-    <Route exact path="/student/:id" component={StudentDetail}/>
-    <Route exact path="/student/attendance" component={attendance}/>
-    <Route exact path="/search/" component={Search}/>
+    <PrivateRoute exact path="/dashboard" component={Dashboard}/>
+    <PrivateRoute exact path="/student/:branch/:year" component={studentByYear}/>
+    <PrivateRoute exact path="/student/:id" component={StudentDetail}/>
+    <PrivateRoute exact path="/student/attendance" component={attendance}/>
+    <PrivateRoute exact path="/search/" component={Search}/>
+    <Route exact path="/" component={Login}/>
 
 </BrowserRouter>
 </Provider>

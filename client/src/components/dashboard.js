@@ -1,47 +1,48 @@
-import React, { Component,useEffect } from 'react';
+import React, { Component,Fragment,useEffect } from 'react';
 import MyNavbar from "./navbar"
 import {connect} from "react-redux"
 import {getStudents} from "./../actions/index";
-import {ListGroup,ListGroupItem,Button} from "reactstrap"
-import empty from "./../img/empty.gif"
+import {Row,Card} from "reactstrap"
 import PropTypes from 'prop-types';
+import {Redirect} from "react-router"
+import imge from "./../img/loader.gif"
 
-const lgistyle={
-   
-        '&:hover': {
-             textDecoration: 'underline',
-        },       
-    
-}
 
-const DashBoard =({getStudents,student:{student},history})=>{
+
+const DashBoard =({getStudents,user,student})=>{
 useEffect(() => {
 getStudents()
 }, [getStudents])
 
-if(!student.length){
-    return <div>
-       <h4 style={{textAlign:'center',marginTop:"20px"}}>No Students found!</h4>
-       <img src={empty} alt="No Students found!"/>
-       </div>
-   }
+if(user.loading){
+    return <img src={imge} alt="loading"/>
+}
+
    return(
+      
+      !user.isAuthenticated?<Redirect to="/"/>:<Fragment>
+
        <div>
           
-           <MyNavbar/>
+           <MyNavbar isAuthenticated={user.isAuthenticated}/>
          
            <h1 >DashBoard!</h1>
-          
-     <ListGroup style={{margin:"20px"}} >
-        {student.map(st=>{
-            return <ListGroupItem id="lgt" key={st._id} onClick={()=>history.push(`/student/${st._id}`)} style={lgistyle}>
-            
-            {st.name}
-            <Button className="float-right">{st.total}%</Button> 
-            </ListGroupItem>
-        })}
-     </ListGroup>
+        <Row style={{display:"flex",padding:"20px",background:"#cccccc",textAlign:"center",justifyContent:"center",marginTop:"70px",height:"200px"}}>
+    <Card className="col col-sm-3" style={{marginRight:"30px"}}>
+       Total students
+       <br/>
+       <br/>
+      <h1>{student.count}</h1> 
+    </Card>
+    <Card className="col col-sm-3" >
+Average attendance
+<br/>
+<br/>
+<h1>{student.avg}%</h1>
+</Card>
+</Row>  
        </div> 
+       </Fragment>
    )
 
 }
@@ -55,7 +56,8 @@ DashBoard.propTypes={
   
 function mapStateToProps(state){
 return{
-    student:state.student
+    student:state.student,
+    user:state.user
 }
 }
 export default connect(mapStateToProps,{getStudents}) (DashBoard);

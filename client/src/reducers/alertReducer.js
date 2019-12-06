@@ -1,6 +1,6 @@
-import { SET_ALERT,REMOVE_ALERT } from "../constants";
+import { SET_ALERT,REMOVE_ALERT,LOGIN_USER_FAIL, SEARCH_STUDENT_FAIL, GET_STUDENT_FAIL, GET_STUDENT_WITH_BRANCH_FAIL } from "./../actions/types";
 
-export default function toasts(state = [], action) {
+export default function (state = [], action) {
   const { payload, type } = action;
 
   switch (type) {
@@ -9,7 +9,7 @@ export default function toasts(state = [], action) {
 
     case REMOVE_ALERT:
       return state.filter(toast => toast.id !== payload);
-
+    
     default:
       return state;
   }
