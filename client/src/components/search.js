@@ -1,33 +1,35 @@
 import React,{useState} from 'react';
-import {Row,Col,Input,Button,Form,ListGroup,ListGroupItem } from "reactstrap"
+import {Row,Col,Button,Input,ListGroup,ListGroupItem } from "reactstrap"
 import {connect} from "react-redux"
 import {searchStudent} from "../actions/index"
 import AttendanceModal from './attendance';
 import MyNavbar from './navbar';
 import PropTypes from 'prop-types'
+import _ from "lodash"
 
 const Search=({searchStudent,student,history,user})=>{
-
-const handleSubmit=(event)=>{
-    event.preventDefault()
-    searchStudent(event.target.querySelector('input').value)
+const [term, setterm] = useState("")
+var myString=!term?"":"No Record found"
+const OnChangeHandle=(value)=>{
+    setterm(value);
+  searchStudent(value);
 }
 return(
     <div>
         <MyNavbar isAuthenticated={user.isAuthenticated}/>
        <Row>
            <Col sm="10">
-           <Form inline onSubmit={handleSubmit} style={{margin:"20px"}}>
-               <input type="text" className="input-control-group" />
-               <Button type="submit">Search</Button>
-           </Form>
-           </Col>
+        {//   <Form inline onSubmit={handleSubmit} style={{margin:"20px"}}>
+        }
+               <Input type="text" style={{margin:"30px",}} className="input-control-group" onChange={(event)=>OnChangeHandle(event.target.value)}/>
+           
+         </Col>
        </Row>
        <Row>
            <Col sm="10">
        <ListGroup style={{margin:"20px"}} >
-        {
-             !student.length?<h1>No Records!</h1>:student.map(st=>{
+        {    
+             !student.length?<h3>{myString}</h3>:student.map(st=>{
             return <ListGroupItem key={st._id} onClick={()=>history.push(`/student/${st._id}`)} style={{cursor:"pointer"}}>
             
             {st.name}
