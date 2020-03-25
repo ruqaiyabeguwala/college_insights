@@ -2,7 +2,8 @@
 import {connect} from "react-redux";
 import {loadUser} from "./actions/index";
 import setAuthToken from "./utils/setAuthToken";
-import { Component } from 'react'
+import React,{ Component } from 'react'
+import {Redirect} from "react-router-dom"
 
 
 
@@ -15,12 +16,16 @@ class App extends Component {
     this.props.loadUser()
   }
   
+
   render() {
-    return (
-      ""
-    );
+  return("")
+    
+  }
+}
+const mapStateToProps=(state)=>{
+  return{
+    auth:state.user.isAuthenticated
   }
 }
 
-
-export default connect(null,{loadUser}) (App);
+export default connect(mapStateToProps,{loadUser}) (App);

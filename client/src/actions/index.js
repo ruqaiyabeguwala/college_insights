@@ -1,7 +1,7 @@
 import {GET_STUDENT,GET_SINGLE_STUDENT,SEARCH_STUDENT,SEARCH_STUDENT_FAIL,
     GET_STUDENT_FAIL,GET_STUDENT_WITH_BRANCH_FAIL,
     GET_STUDENT_WITH_BRANCH_SUCCESS,SET_ATTENDANCE,SET_ATTENDANCE_FAIL,
-    SET_ALERT,REMOVE_ALERT, LOGIN_USER_SUCCESS, LOGIN_USER_FAIL,AUTH_FAIL,AUTH_SUCCESS, GET_COUNT, GET_COUNT_FAIL, LOGOUT} from "./types"
+    SET_ALERT,REMOVE_ALERT,SORT_STUDENT_BY_BRANCH,SORT_STUDENT_FAIL_BRANCH, LOGIN_USER_SUCCESS, LOGIN_USER_FAIL,AUTH_FAIL,AUTH_SUCCESS, GET_COUNT, GET_COUNT_FAIL, LOGOUT, SEARCH_STUDENT_BY_BRANCH, SEARCH_STUDENT_FAIL_BRANCH} from "./types"
 import axios from "axios";
 import uuid from "uuid"
 import  setAuthToken from "./../utils/setAuthToken";
@@ -103,10 +103,11 @@ dispatch({
 //get full student details
 export const getStudent=(id)=>async dispatch=>{
     try{
-     const res= await axios.get(`/student/auth/${id}`)
+     const res= await axios.get(`/student/use/detail/${id}`)
+     console.log(id);
      dispatch({
     type:GET_SINGLE_STUDENT,
-    payload:{student:res.data.student,count:res.data.count}
+    payload:res.data
      })
     }
     catch(err){
@@ -151,6 +152,39 @@ dispatch({
     }
 }
 
+//search by branch
+export const searchByBranch=(value)=> dispatch=>{
+    try{
+      dispatch({
+          type:SEARCH_STUDENT_BY_BRANCH,
+          payload:value
+      })
+    }
+    catch(err){
+        console.error(err.message);
+dispatch({
+    type:SEARCH_STUDENT_FAIL_BRANCH,
+    payload: {msg:err.response.statusText,type:err.response.status}
+})
+    }
+    }
+
+    export const sortByBranch=(term)=> dispatch=>{
+        try{
+          dispatch({
+              type:SORT_STUDENT_BY_BRANCH,
+              payload:term
+          })
+        }
+        catch(err){
+            console.error(err.message);
+    dispatch({
+        type:SORT_STUDENT_FAIL_BRANCH,
+        payload: {msg:err.response.statusText,type:err.response.status}
+    })
+        }
+        }
+
 //enter attendance
 export const setAttendance=(id,present,date)=>async dispatch=>{
     try{
@@ -162,7 +196,7 @@ export const setAttendance=(id,present,date)=>async dispatch=>{
     // console.log(present)
      dispatch({
     type:SET_ATTENDANCE,
-    payload:{id,attendance:res.data}
+    payload:res.data
      })
 
      dispatch(setAlert("attendance added","success"))

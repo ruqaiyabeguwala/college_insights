@@ -7,16 +7,29 @@ name:{
 },
 email:{
     type:String,
-    required:true
+   default:null
 
 },
+socialID:{
+    type:String,
+    default:null
+},
 phone:{
-    type:Number
+    type:Number,
+    default:null
 },
 password:{
     type:String,
-    min:5
+    min:4,
+    default:null
 }
 })
+
+/*userSchema.methods.comparePassword=(password,cb)=>{
+    bcrypt.compare(password,this.password,(err,isMatch)=>{
+        if (err) return cb(err);
+        cb(null, isMatch);
+    })
+}*/
 
 module.exports= User= mongoose.model("user",userSchema)

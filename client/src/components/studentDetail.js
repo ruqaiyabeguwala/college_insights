@@ -17,13 +17,13 @@ useEffect(() => {
 
   return (
     <div>
-   <MyNavbar isAuthenticated={user.isAuthenticated}/>
+   <MyNavbar />
    <h1 style={{textAlign:"center"}}>Student Details!</h1>
       
       <Row>
       
         <Col sm="6" style={{margin:"30px auto",textAlign:"justify",fontWeight:"bold"}}>
-      <Card>
+       <Card>
         <CardBody>
         <CardTitle>Name: {student.name}</CardTitle>
           <CardSubtitle>Branch: {student.branch}</CardSubtitle>
@@ -32,6 +32,7 @@ useEffect(() => {
          <AttendanceModal student={student}/>
         </CardBody>
       </Card>
+      
       </Col>
       </Row>
     </div>

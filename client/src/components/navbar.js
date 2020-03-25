@@ -100,14 +100,14 @@ const MyNavbar =({isAuthenticated,logout})=>{
                 </DropdownMenu>
               </UncontrolledDropdown>
               
-              {  console.log(isAuthenticated)}
+             
              { !isAuthenticated?"": 
               <NavItem>
                 <NavLink href="/" onClick={logout}>
                 <Link to="/" style={{textDecoration:"none",color:"#000000"}} >Logout</Link>
                 </NavLink>
               </NavItem>
-            }
+     }
              
             </Nav>
           </Collapse>
@@ -115,8 +115,13 @@ const MyNavbar =({isAuthenticated,logout})=>{
       </div>
     );
 }
-
-MyNavbar.defaultProps={
-  isAuthenticated:false
+function mapStateToProps(state){
+ return{
+  isAuthenticated: state.user.isAuthenticated
+ } 
 }
-export default connect(null,{logout})(MyNavbar);
+
+/*MyNavbar.defaultProps={
+  isAuthenticated:false
+}*/
+export default connect(mapStateToProps,{logout})(MyNavbar);

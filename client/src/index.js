@@ -24,7 +24,9 @@ ReactDOM.render(
 <Provider  store={store}>
 <App/>
 <Alert/>
+
     <BrowserRouter>
+   
     <PrivateRoute exact path="/dashboard" component={Dashboard}/>
     <PrivateRoute exact path="/student/:branch/:year" component={studentByYear}/>
     <PrivateRoute exact path="/student/:id" component={StudentDetail}/>

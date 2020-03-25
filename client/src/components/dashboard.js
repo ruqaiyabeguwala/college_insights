@@ -5,7 +5,7 @@ import {getStudents} from "./../actions/index";
 import {Row,Card} from "reactstrap"
 import PropTypes from 'prop-types';
 import {Redirect} from "react-router"
-import imge from "./../img/loader.gif"
+import MySpinner from './mySpinner';
 
 
 
@@ -15,17 +15,15 @@ getStudents()
 }, [getStudents])
 
 if(user.loading){
-    return <img src={imge} alt="loading"/>
+    return <MySpinner/>
 }
-
+if(!user.isAuthenticated){
+  return  <Redirect to="/"/>
+}
    return(
-      
-      !user.isAuthenticated?<Redirect to="/"/>:<Fragment>
-
-       <div>
+             <div>
           
-           <MyNavbar isAuthenticated={user.isAuthenticated}/>
-         
+           <MyNavbar />
            <h1 >DashBoard!</h1>
         <Row style={{display:"flex",padding:"20px",background:"#cccccc",textAlign:"center",justifyContent:"center",marginTop:"70px",height:"200px"}}>
     <Card className="col col-sm-3" style={{marginRight:"30px"}}>
@@ -42,7 +40,6 @@ Average attendance
 </Card>
 </Row>  
        </div> 
-       </Fragment>
    )
 
 }
