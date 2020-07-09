@@ -3,6 +3,8 @@ const googleStrategy= require('passport-google-oauth20').Strategy;
 const facebookStrategy=require('passport-facebook').Strategy;
 const config= require('config')
 const User= require("./../model/User");
+const localStrategy=require("passport-local").Strategy;
+const bcrypt= require("bcrypt")
 
 passport.use(new googleStrategy({
     clientID:config.get("googleID"),
@@ -10,11 +12,9 @@ passport.use(new googleStrategy({
     callbackURL:'/auth/google/callback'
 },async (accessToken,refreshToken,profile,done)=>{
     try{
-        console.error(profile)
         //check if user already exists
       let user= await User.findOne({socialID:profile.id});
       if(user){
-          console.error("user already exists");
         done(null,user)
       }
       else{
@@ -34,7 +34,7 @@ passport.use(new googleStrategy({
     }
     catch(err){
         console.error(err);
-        res.status(400).json({errors:[err,{msg:"error adding to db"}]});
+        done(err,false)
     }
 })
 );
@@ -45,10 +45,8 @@ passport.use(new facebookStrategy({
    callbackURL: "/auth/facebook/callback"
 },async (accessToken,refreshToken,profile,done)=>{
     try{
-   console.log(profile); 
    let user= await User.findOne({socialID:profile.id});
       if(user){
-          console.error("user already exists");
         done(null,user)
       }
       else{
@@ -68,10 +66,41 @@ passport.use(new facebookStrategy({
     }
     catch(err){
         console.error(err);
-        res.status(400).json({errors:[err,{msg:"error adding to db"}]});
+      done(err,false)
     }
 }
 ))
+
+
+passport.use(new localStrategy(
+    {
+    usernameField: 'email',
+    passwordField: 'password'
+   // passReqToCallback: true
+},
+    async (email,password,done)=>{
+     try{
+     const user= await User.findOne({ email });
+            if (!user) {
+              return done(null, false, { message: 'Incorrect username.' });
+            }
+            bcrypt.compare(password, user.password, (err, isValid) => {
+                if (err) {
+                  return done(err)
+                }
+                if (!isValid) {
+                  return done(null, false,{message:"invalid password"})
+                }
+                return done(null, user)
+              })
+          
+        }
+        catch(err){
+               console.log(err);
+               done(err)
+        }
+      }));
+
 
 passport.serializeUser((user,done)=>{
 done(null,user.id)

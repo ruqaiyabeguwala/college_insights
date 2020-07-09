@@ -1,29 +1,30 @@
-import React, { Component,Fragment,useEffect } from 'react';
-import MyNavbar from "./navbar"
+import React, {useEffect,useState } from 'react';
 import {connect} from "react-redux"
-import {getStudents} from "./../actions/index";
+import * as actions from "./../actions/index";
 import {Row,Card} from "reactstrap"
 import PropTypes from 'prop-types';
 import {Redirect} from "react-router"
 import MySpinner from './mySpinner';
 
+const DashBoard =({getStudents,user,student,loadUser,setAlert})=>{
+    const [load, setload] = useState(true);
 
-
-const DashBoard =({getStudents,user,student})=>{
 useEffect(() => {
-getStudents()
-}, [getStudents])
+    getStudents()
+    setTimeout(() => {
+     setload(false)
+    }, 1000);
+}, [])
 
-if(user.loading){
+if(load ){
     return <MySpinner/>
 }
 if(!user.isAuthenticated){
+    setAlert("Please login first","danger");
   return  <Redirect to="/"/>
 }
    return(
              <div>
-          
-           <MyNavbar />
            <h1 >DashBoard!</h1>
         <Row style={{display:"flex",padding:"20px",background:"#cccccc",textAlign:"center",justifyContent:"center",marginTop:"70px",height:"200px"}}>
     <Card className="col col-sm-3" style={{marginRight:"30px"}}>
@@ -41,7 +42,6 @@ Average attendance
 </Row>  
        </div> 
    )
-
 }
 
 DashBoard.propTypes={
@@ -57,4 +57,4 @@ return{
     user:state.user
 }
 }
-export default connect(mapStateToProps,{getStudents}) (DashBoard);
+export default connect(mapStateToProps,actions) (DashBoard);

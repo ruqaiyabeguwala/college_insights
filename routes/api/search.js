@@ -1,13 +1,11 @@
 const express= require("express");
 const router= express.Router();
 const Student= require("./../../model/Student");
-
-var ObjectId = require('mongoose').Types.ObjectId; 
-
+const auth=require("./../../middleware/auth");
 
 //@api /search/name
 //@desc search a student by name
-router.get("/:name",async (req,res)=>{
+router.get("/:name",auth,async (req,res)=>{
 
     try{ 
 

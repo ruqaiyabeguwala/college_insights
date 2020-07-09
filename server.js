@@ -6,6 +6,9 @@ const path=require("path")
 const cookieSession= require("cookie-session");
 const passport= require("passport")
 require("./services/passport");
+const bodyParser= require("body-parser")
+const cors= require("cors")
+const flash=require("connect-flash")
 
 
 const db="mongodb://localhost:27017/collegeInsight";
@@ -14,12 +17,20 @@ mongoose
 .then(()=>console.log("mongoDB connected"))
 .catch((err)=>console.log(err));
 
+app.use(flash())
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json())
 app.use(cookieSession({
     maxAge:60*60*1000,
     keys:[config.get("jwtSecret")]
 }))
 app.use(passport.initialize());
 app.use(passport.session());
+
+
+
+//app.use(cors("Access-Control-Allow-Origin":"true"))
+
 app.use("/student",require("./routes/api/student"))
 //for searches
 app.use("/search",require("./routes/api/search"))

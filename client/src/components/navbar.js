@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import {Link} from "react-router-dom"
 import {connect} from "react-redux"
+import {Redirect} from "react-router-dom"
 import {
   Collapse,
   Navbar,
@@ -14,23 +15,44 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem } from 'reactstrap';
-  import {logout} from "./../actions/index"
+  import * as actions from "./../actions/index"
 
-const MyNavbar =({isAuthenticated,logout})=>{
+const MyNavbar =({isAuthenticated,logout,user})=>{
     const [isOpen, setIsOpen] = useState(false);
 
     const toggle = () => setIsOpen(!isOpen);
-  
+  const renderMethod=()=>{
+   switch(isAuthenticated){
+     
+    case false:
+     return ( <NavItem>
+     <NavLink >
+     <Link to="/" style={{textDecoration:"none",color:"#000000"}} >Login</Link>
+     </NavLink>
+   </NavItem>)
+
+     case null:
+     return ""
+   
+     default:
+     return( <NavItem>
+      <NavLink  onClick={logout}>
+      <Link to="/" style={{textDecoration:"none",color:"#000000"}} >Logout</Link>
+      </NavLink>
+    </NavItem>)
+   }            
+  }
+
     return (
       <div style={{color:"#cccccc"}}>
         <Navbar color="dark" light expand="md">
-          <NavbarBrand href="/dashboard">College Insights!</NavbarBrand>
+          <Link to="/dashboard" style={{textDecoration:'none',color:'#000000'}}>College Insights!</Link>
           <NavbarToggler onClick={toggle} />
           <Collapse isOpen={isOpen} navbar>
             <Nav className="ml-auto" navbar>
           
                 <NavItem>
-                <NavLink href="/">
+                <NavLink >
                 <Link to="/search" style={{textDecoration:"none",color:"#000000"}}>Search</Link>
                 </NavLink>
               </NavItem>
@@ -101,13 +123,7 @@ const MyNavbar =({isAuthenticated,logout})=>{
               </UncontrolledDropdown>
               
              
-             { !isAuthenticated?"": 
-              <NavItem>
-                <NavLink href="/" onClick={logout}>
-                <Link to="/" style={{textDecoration:"none",color:"#000000"}} >Logout</Link>
-                </NavLink>
-              </NavItem>
-     }
+             { renderMethod()}
              
             </Nav>
           </Collapse>
@@ -124,4 +140,4 @@ function mapStateToProps(state){
 /*MyNavbar.defaultProps={
   isAuthenticated:false
 }*/
-export default connect(mapStateToProps,{logout})(MyNavbar);
+export default connect(mapStateToProps,actions)(MyNavbar);

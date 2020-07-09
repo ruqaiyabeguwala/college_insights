@@ -1,63 +1,77 @@
-import React,{Fragment} from 'react'
+import React,{Fragment,useEffect} from 'react'
 import PropTypes from 'prop-types'
 //rfep
-import {Form,Button,Input} from "reactstrap";
+import {Form,Button,Input,FormGroup} from "reactstrap";
 import {Field,reduxForm} from "redux-form";
 import {connect} from "react-redux";
-import {loginUser} from "./../actions/index";
+import * as actions from "./../actions/index";
 import {Redirect} from "react-router"
-import Mynavbar from "./navbar";
-import Loader from "./../img/loader.gif";
+import gimage from "./../img/google.png"
+import fbimage from "./../img/fb.png"
    
-const handleInput=(field)=>{
- const {touched,error,warning}=field.meta
- return ( <Input type={field.type} placeholder={field.placeholder} name={field.name} className={field.meta.touched?(field.meta.error?"border-danger":""):""} /> 
- //touched && ((error && <span className="text-danger">{error}</span>) || (warning && <span>{warning}</span>))
+const handleInput=(field)=>{ 
+ return (
+  <FormGroup className="m-2">      
+  <Input className= {field.meta.touched?(field.meta.error?"border border-danger":""):""} type={field.type} placeholder={field.placeholder}  {...field.input}/>
+<div className="text-danger" > {field.meta.touched?field.meta.error:""}</div>
+</FormGroup>
  )
 }
 
-const Login = ({loginUser,history,handleSubmit,pristine,submitting,invalid,user,errors}) => {
-  
+const Login = ({loginUser,loadUser,history,handleSubmit,pristine,submitting,invalid,user}) => {
   return (
-    user.isAuthenticated? <Redirect to="/dashboard"/>: 
-    <Fragment>
-    <div>
-        <Mynavbar />
-          <h1>login now!</h1>
-    <div >
-      <Form style={{position:"absolute",top:200,right:200,left:200}}
+  user.isAuthenticated? <Redirect to="/dashboard"/>:  
+    <Fragment >
+    <div className="row" style={{marginTop:100,marginLeft:300}}>
+      <Form 
        onSubmit={handleSubmit((values)=>{
+        // console.log(values)
          loginUser(values);
-        
         })}>
           <Field name="email" placeholder="Enter email" component={handleInput} className="form-control" required/>
-          {//field.meta.touched?(field.meta.error?er:""):""}       
-          }
          
           <Field name="password" type="password" placeholder="Enter password" component={handleInput} className="form-control" required/>
-          <Button disabled={pristine|| submitting|| invalid}>Login</Button>
+          <Button disabled={pristine|| submitting || invalid}>Login</Button>
       </Form>
-    </div>
-    </div>
+     
+      </div>
+      <div style={{marginLeft:300}}>
+      <br/>
+      <a href="/auth/google" className="btn" style={{background:"none",border:"1px solid grey"}}>
+      <img src={gimage} width="30px" height="30px" style={{padding:"5px"}}/> 
+      Sign in with Google
+      </a>
+     <br/>
+    
+      <a href="/auth/facebook" className="btn" style={{background:"none",border:"1px solid grey"}}>
+      <img src={fbimage} width="30px" height="30px" style={{padding:"5px"}}/> 
+      Sign in with facebook
+      </a>
+      </div>
     </Fragment>
    
   )
 }
 
 Login.propTypes = {
-loginUser: PropTypes.func.isRequired
+loginUser: PropTypes.func.isRequired,
+loadUser:PropTypes.func.isRequired
 }
 function validate(values){
   const errors=[];
   if(!values.email){
     errors.email="Enter an email"
   }
+  if(/.+@.+\..+/.test(values.email)==false){
+   errors.email="Please enter a proper email "
+  }
     if(!values.password){
       errors.password="Enter a password"
     }
+
   return errors;
 }
 function mapStateToProps(state){
   return{user:state.user}
 }
-export default reduxForm({validate,form:"login"})(connect(mapStateToProps,{loginUser})(Login))
+export default reduxForm({validate,form:"login"})(connect(mapStateToProps,actions)(Login))

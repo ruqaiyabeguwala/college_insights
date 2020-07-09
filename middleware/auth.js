@@ -2,7 +2,13 @@ const jwt= require( "jsonwebtoken")
 const config = require( "config")
 
 module.exports=(req,res,next)=>{
-const token= req.header("x-auth-token");
+    if(!req.user){
+        res.status(403).json({errors:[{msg:"Unauthorized"}]})
+    }
+    else{
+        next();
+    }
+/*const token= req.header("x-auth-token");
 if(!token)
 return res.status(404).json("Token not found");
 try{
@@ -14,5 +20,5 @@ next();
 catch(err){
     console.error(err.message)
 res.status(500).json([err,"Invalid token!"])
-}
+}*/
 }

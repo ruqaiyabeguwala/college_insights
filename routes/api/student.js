@@ -26,26 +26,14 @@ catch(err){
 //@route /
 //@desc get all the students details
 router.get("/",async (req,res)=>{
- try{   const student= await Student.find();
+ try{   
+  /*  if(!req.user){
+        return res.status(401).json("Unauthorized. please login first")
+    } */
+    const student= await Student.find();
     if(!student)
      return res.status(404).json({errors:[{msg:"No Students found"}]})
-      const count= await Student.countDocuments();
-   var avg=await Student.aggregate([
-       
-        {
-          $group: {
-            _id: null,
-            avgAttendance: { $avg: "$total" }
-          }
-        }
-      ])
-      const [avgAttendance]= avg;
-      avg=avgAttendance.avgAttendance;
-     
-     //const sum= _.sum(student.attendance);
-   
-    // const averagePercent= sum.sumAttendance/count;
-     res.json({student,count,avg})
+     res.json(student);
  }
    catch(err)
  {
@@ -63,29 +51,12 @@ router.get("/:branch/:year",async (req,res)=>{
        const cur_year= new Date().getFullYear();
        const ad_year= cur_year- Number(req.params.year) ;
        const {branch}= req.params;
-       //const ndate= new Date(date)
        const student= await Student.find({ $and:[{branch},{ad_year}]})
-    /* const student= await Student.aggregate([
-         {
-$project:{
-    _id:1,
-    attendance:1
-}
-         },
-         {
-             $match:{
-                 "date":ndate,"branch":branch,"ad_year":ad_year
-             }
-         },
-         {
-             $unwind:"$attendance"
-         
-        }
-     ])*/
+   
       if(!student)
         return res.status(404).json({errors:[{msg:"No Students found"}]})
-   
-        res.json(student)
+       
+     return res.json(student)
     }
       catch(err)
     {
@@ -99,10 +70,10 @@ $project:{
 router.get("/use/detail/:id",async (req,res)=>{
     try{ 
         
-        const student= await Student.findOne({_id:req.params.id});
-       if(!student.length)
+        const student= await Student.findById(req.params.id);
+       if(!student)
         return res.status(404).json({errors:[{msg:"No Students found"}]})
-        res.json(student)
+       return res.json(student)
     }
       catch(err)
     {
@@ -111,20 +82,34 @@ router.get("/use/detail/:id",async (req,res)=>{
    }
    })
    
- //@route /student/:id
+//@route /student/:id
 //@desc set attendance
-   router.put("/:id", async (req,res)=>{
-   
+   router.put("/:id", async (req,res)=>{ 
     try{
-        const student= await Student.findById(req.params.id);
         const {present,feedDate}=req.body;
-        student.attendance.map((at)=>{
-
-            if(at.date===feedDate)
-            {
-                return res.status(400).json({errors:[{msg:"Attendance already done for this date"}]})
-            }
-        })
+        const att={
+            present:present,
+            date:feedDate
+        }
+      
+      const student= await Student.findById(req.params.id)
+        const upd= student.attendance.filter((at)=>at.date==feedDate);
+        
+        if(upd.length){
+            let result= await Student.updateOne(
+                {_id:req.params.id,"attendance.date":feedDate},
+                {
+                    $set:{"attendance.$.present":present}
+                },
+                    {upsert:true}
+                )
+        }
+        else{
+          let result=  await Student.updateOne(
+                {_id:req.params.id},
+                { $addToSet:{attendance:att}})
+        }
+       
         const date1 = new Date("11-01-2019"); 
         const date2= new Date(feedDate)
         
@@ -133,31 +118,14 @@ var Difference_In_Time = date2.getTime() - date1.getTime();
   
 // To calculate the no. of days between two dates 
 var Difference_In_Days =parseInt( Difference_In_Time / (1000 * 3600 * 24)); 
-     //   console.error("differnce in days"+Difference_In_Days);
-        const att={
-            present:present,
-            date:feedDate
-        } 
-     
-        student.attendance.unshift(att);
-        await student.save();
-        let p=0;
-      
-       student.attendance.map(at=>{
-           
-{
-                if( at.present){
-                p++;
-            }
-            }    // total++;
-        })
-       
-        const av=parseInt(p/Difference_In_Days*100)
-        
-
-     await student.updateOne({total:av})
+      //  student.attendance.unshift(att);
+     //   await student.save();
     
-      res.json(student);
+  const av=(student.total+(present?1:0)/Difference_In_Days).toFixed(2);
+     await student.updateOne({total:av})
+     const st= await Student.findById(req.params.id);
+      res.json(st);
+      
         }
 
 catch(err){
@@ -166,15 +134,6 @@ res.status(500).json({errors:[{err,msg:"attendance not updated"}]});
 }
 })
 
-/*router.get("/sort/:term", async (req,res)=>{
-    try{
-       const student= Student.find.
-    }
-    catch(err){
-        console.error(err.message)
-    res.status(500).json({errors:[{err,msg:"Sorting not done"}]});
-    }
-})*/
 
    
 module.exports= router;

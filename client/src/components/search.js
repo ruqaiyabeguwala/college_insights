@@ -1,28 +1,28 @@
 import React,{useState} from 'react';
 import {Row,Col,Button,Input,ListGroup,ListGroupItem } from "reactstrap"
 import {connect} from "react-redux"
-import {searchStudent} from "../actions/index"
-import AttendanceModal from './attendance';
-import MyNavbar from './navbar';
+import * as actions from "../actions/index"
 import PropTypes from 'prop-types'
 import _ from "lodash"
+import {withRouter} from "react-router-dom"
+import {Redirect} from "react-router"
 
-const Search=({searchStudent,student,history,user})=>{
+const Search=({searchStudent,student,history,user,setAlert})=>{
 const [term, setterm] = useState("")
 var myString=!term?"":"No Record found"
 const OnChangeHandle=(value)=>{
     setterm(value);
   searchStudent(value);
 }
+if(!user.isAuthenticated){
+    setAlert("Please login first","danger");
+    return  <Redirect to="/"/>
+  }
 return(
     <div>
-        <MyNavbar isAuthenticated={user.isAuthenticated}/>
-       <Row>
+           <Row>
            <Col sm="10">
-        {//   <Form inline onSubmit={handleSubmit} style={{margin:"20px"}}>
-        }
-               <Input type="text" style={{margin:"30px",}} className="input-control-group" onChange={(event)=>OnChangeHandle(event.target.value)}/>
-           
+               <Input type="text" style={{margin:"30px",}} className="input-control-group" onChange={(event)=>OnChangeHandle(event.target.value)}/>   
          </Col>
        </Row>
        <Row>
@@ -36,7 +36,7 @@ return(
             <Button className="float-right">{st.total}%</Button> 
             </ListGroupItem>
         })
-           
+          
         }
         </ListGroup>
         </Col>
@@ -48,8 +48,8 @@ return(
 
 Search.propTypes={
 searchStudent:PropTypes.func.isRequired,
-student:PropTypes.object.isRequired,
-history:PropTypes.func.isRequired
+student:PropTypes.array.isRequired,
+history:PropTypes.object.isRequired
 }
 
 function mapStateToProps(state){
@@ -58,4 +58,4 @@ function mapStateToProps(state){
         user:state.user
     }
 } 
-export default connect(mapStateToProps,{searchStudent})(Search);
+export default connect(mapStateToProps,actions)(withRouter(Search));

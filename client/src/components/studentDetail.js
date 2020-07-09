@@ -5,19 +5,23 @@ import {
   Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, Button,Col,Row
 } from 'reactstrap';
-import {getStudent} from "./../actions/index"
+import * as actions from "./../actions/index"
 import AttendanceModal from "./attendance" 
 import MyNavbar from "./navbar"
 import PropTypes from 'prop-types';
+import {Redirect} from "react-router"
 
-const StudentDetail = ({getStudent,student,match,user}) => {
+const StudentDetail = ({getStudent,student,match,user,setAlert}) => {
 useEffect(() => {
  getStudent(match.params.id)
 }, [getStudent])
+if(!user.isAuthenticated){
+  setAlert("Please login first","danger");
+  return  <Redirect to="/"/>
+}
 
   return (
     <div>
-   <MyNavbar />
    <h1 style={{textAlign:"center"}}>Student Details!</h1>
       
       <Row>
@@ -53,4 +57,4 @@ return{
   user:state.user
 }
 }
-export default connect(mapStateToProps,{getStudent})(withRouter(StudentDetail));
+export default connect(mapStateToProps,actions)(withRouter(StudentDetail));
