@@ -1,8 +1,0 @@
-{
-    "mongoURI":"mongodb+srv://admin:admin@collegeinsights-mm1kp.mongodb.net/test?retryWrites=true&w=majority",
-    "jwtSecret":"mySecretToken",
-    "googleID": "336738318834-kgemrtlsn6ue23910nkbb60bf0c10ouk.apps.googleusercontent.com",
-    "googleSecret":"UL5G9v-Soed0YSzwDbqaXxZW",
-    "facebookID":"516349072646198",
-    "facebookSecret":"51e359bbcb1f97f28c44d1090ac82dd1"
-}
